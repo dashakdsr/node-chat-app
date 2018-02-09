@@ -6,5 +6,27 @@
 </head>
 <body>
   <p>Welcome to the chat app</p>
+
+  <script src='/socket.io/socket.io.js'></script>
+  <script>
+    let socket = io()
+
+    socket.on('connect', () => {
+      console.log('connected to server')
+    })
+
+    socket.emit('createMessage', {
+      to: 'jun@eample.com',
+      text: 'Hey'
+    })
+
+    socket.on('newMessage', (message) => {
+      console.log('newMessage', message)
+    })
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from server')
+    })
+  </script>
 </body>
 </html>
