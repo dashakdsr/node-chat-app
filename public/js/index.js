@@ -3,10 +3,6 @@ let socket = io()
 socket.on('connect', () => {
   console.log('connected to server')
 
-  socket.emit('createMessage', {
-    to: 'hen@example.com',
-    text: 'Hey'
-  })
 })
 
 socket.on('disconnect', () => {
@@ -15,11 +11,19 @@ socket.on('disconnect', () => {
 
 socket.on('newMessage', (data) => {
   console.log('New message', data)
+  let li = jQuery('<li></li>')
+  li.text(`${data.from}: ${data.text}`)
+
+  jQuery('#messages').append(li)
 })
 
-socket.emit('createMessage', {
-  from: 'Frank',
-  text: 'Hi'
-}, function (data) {
-  console.log('Got it', data)
+jQuery('#message-form').on('submit', function (e) {
+  e.preventDefault()
+
+  socket.emit('createMessage', {
+    from: 'User',
+    text: jQuery('[name=message]').val()
+  }, function () {
+
+  })
 })

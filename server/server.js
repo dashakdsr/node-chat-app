@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
     console.log('createMessage', data)
 
     io.emit('newMessage', generateMessage(data.from, data.text))
-    foo('This is from the server')
+    // foo('This is from the server')
     //
     // socket.broadcast.emit('newMessage', {
     //   from: data.from,
