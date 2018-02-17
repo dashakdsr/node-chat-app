@@ -10,20 +10,34 @@ socket.on('disconnect', () => {
 })
 
 socket.on('newLocationMessage', (message) => {
-  let li = jQuery('<li></li>')
-  let a = jQuery('<a target="_blank">My current location</a>')
-  li.text(`${message.from}: `)
-  a.attr('href', message.url)
+  let formattedTime = moment(message.createdAt).format('h:mm a')
 
-  li.append(a)
+  let template = jQuery('#location-message-template').html()
+  let html = Mustache.render(template, {
+    url: message.url,
+    from: message.from,
+    createdAt: formattedTime
+  })
+
+  jQuery('#messages').append(html)
+  // let li = jQuery('<li></li>')
+  // let a = jQuery('<a target="_blank">My current location</a>')
+  // li.text(`${message.from} ${formattedTime}: `)
+  // a.attr('href', message.url)
+  //
+  // li.append(a)
 })
 
 socket.on('newMessage', (data) => {
-  console.log('New message', data)
-  let li = jQuery('<li></li>')
-  li.text(`${data.from}: ${data.text}`)
+  let formattedTime = moment(data.createdAt).format('h:mm a')
+  let template = jQuery('#message-template').html()
+  let html = Mustache.render(template, {
+    text: data.text,
+    from: data.from,
+    createdAt: formattedTime
+  })
 
-  jQuery('#messages').append(li)
+  jQuery('#messages').append(html)
 })
 
 jQuery('#message-form').on('submit', function (e) {
